@@ -5,23 +5,23 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "protected_action")
-@Table(name = "protected_action")
+@Entity
+@Table(name = "users")
 @NoArgsConstructor
 @Getter
-public class ProtectedAction {
-
+public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
 
-  private String name;
+  @Column(name = "username", nullable = false)
+  private String username;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "access_tier_id")
   private AccessTier accessTier;
 
-  public ProtectedAction(String name) {
-    this.name = name;
+  public User(String username) {
+    this.username = username;
   }
 }
