@@ -1,5 +1,6 @@
 package dev.scottdickerson.rbacservice.rbacapi.repositories;
 
+import dev.scottdickerson.rbacservice.rbacapi.model.AccessTier;
 import dev.scottdickerson.rbacservice.rbacapi.model.User;
 import java.util.List;
 import java.util.UUID;
@@ -12,4 +13,5 @@ public interface UsersRepository extends CrudRepository<User, UUID> {
   @Override
   @NonNull
   List<User> findAll();
+
 }

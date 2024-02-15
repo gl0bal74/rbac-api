@@ -12,4 +12,5 @@ public interface ProtectedActionsRepository extends CrudRepository<ProtectedActi
   @Override
   @NonNull
   List<ProtectedAction> findAll();
+
 }

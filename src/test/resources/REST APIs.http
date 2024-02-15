@@ -1,0 +1,16 @@
+GET http://localhost:8080/access-tiers
+
+###
+GET http://localhost:8080/access-tiers/Tier 1
+
+###
+GET http://localhost:8080/users
+
+###
+GET http://localhost:8080/protected-actions
+
+###
+GET http://localhost:8080/protected-actions/Check heart rate/Nobody
+
+###
+GET http://localhost:8080/protected-actions/Check heart rate/Admin

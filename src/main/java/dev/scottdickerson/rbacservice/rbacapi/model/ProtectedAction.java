@@ -1,14 +1,19 @@
 package dev.scottdickerson.rbacservice.rbacapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Entity(name = "protected_action")
-@Table(name = "protected_action")
+@Entity
+@Table
 @NoArgsConstructor
 @Getter
+@Setter
+@ToString
 public class ProtectedAction {
 
   @Id
@@ -17,11 +22,16 @@ public class ProtectedAction {
 
   private String name;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "access_tier_id")
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "access_tier_id", nullable = false)
+  @JsonBackReference
   private AccessTier accessTier;
 
   public ProtectedAction(String name) {
     this.name = name;
+  }
+  public ProtectedAction(String name, AccessTier accessTier) {
+    this.name = name;
+    this.accessTier = accessTier;
   }
 }

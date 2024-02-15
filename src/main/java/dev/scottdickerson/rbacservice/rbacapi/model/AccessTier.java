@@ -1,5 +1,7 @@
 package dev.scottdickerson.rbacservice.rbacapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,7 @@ import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class AccessTier {
   @Id
@@ -20,17 +23,24 @@ public class AccessTier {
   @Column(name = "description", nullable = false)
   private String description;
 
-  @OneToMany(mappedBy = "accessTier", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private List<ProtectedAction> protectedActions = new ArrayList<>();
+  @Column
+  private long hierarchy;
 
-  @OneToMany(mappedBy = "accessTier", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "accessTier", fetch = FetchType.EAGER)
+  @JsonManagedReference
   private List<User> users = new ArrayList<>();
 
+  @OneToMany(mappedBy = "accessTier", fetch = FetchType.EAGER)
+  @JsonManagedReference
+  private List<ProtectedAction> protectedActions = new ArrayList<>();
+
+
   public AccessTier(
-      String name, String description, List<ProtectedAction> protectedActions, List<User> users) {
+      String name, String description, long hierarchy
+  ) {
     this.name = name;
     this.description = description;
-    this.protectedActions = protectedActions;
-    this.users = users;
+    this.hierarchy = hierarchy;
   }
+
 }
