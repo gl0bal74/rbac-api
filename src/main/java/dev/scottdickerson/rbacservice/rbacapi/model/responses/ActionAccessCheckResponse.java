@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Builder
 @Data
-public class ActionAccessCheckResponse  {
+public class ActionAccessCheckResponse {
   String action;
   String user;
   boolean hasPermission;
+  String message;
 }

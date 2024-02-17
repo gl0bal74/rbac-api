@@ -27,10 +27,6 @@ public class User {
   @JsonBackReference
   private AccessTier accessTier;
 
-  public User(String username) {
-    this.username = username;
-  }
-
   public User(String username, AccessTier accessTier) {
     this.username = username;
     this.accessTier = accessTier;

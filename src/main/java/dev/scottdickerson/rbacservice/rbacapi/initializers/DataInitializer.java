@@ -27,30 +27,27 @@ public class DataInitializer {
   public void setupData() {
     log.info("Setting up initial RBAC data");
 
-    AccessTier tier1 =
-        new AccessTier(
-            "Tier 1",
-            "Lowest level of protection", 20
-
-        );
+    AccessTier tier1 = new AccessTier("Tier 1", "Lowest level of protection", 20);
 
     AccessTier tier2 =
-        new AccessTier(
-            "Tier 2",
-            "Protected resource access with password", 50);
+        new AccessTier("Tier 2", "Protected resource access with password", 50, true, "Tier 2");
 
-    AccessTier tier3 =
-        new AccessTier(
-            "Tier 3",
-            "Locked down resource access", 100);
+    AccessTier tier3 = new AccessTier("Tier 3", "Locked down resource access", 100);
 
-//    accessTierRepository.saveAll(List.of(tier1, tier2, tier3));
+    tier1 = accessTierRepository.save(tier1);
+    tier2 = accessTierRepository.save(tier2);
+    tier3 = accessTierRepository.save(tier3);
 
-
-    List<ProtectedAction> protectedActions = List.of(new ProtectedAction("Play music",tier1),new ProtectedAction("Check weather",tier1), new ProtectedAction("Check heart rate",tier2), new ProtectedAction("Book flights",tier3));
+    List<ProtectedAction> protectedActions =
+        List.of(
+            new ProtectedAction("Play music", tier1),
+            new ProtectedAction("Check weather", tier1),
+            new ProtectedAction("Check heart rate", tier2),
+            new ProtectedAction("Book flights", tier3));
     protectedActionsRepository.saveAll(protectedActions);
 
-    List<User> sampleUsers = List.of(new User("Admin",tier3), new User("Friend",tier2), new User("Nobody",tier1));
+    List<User> sampleUsers =
+        List.of(new User("admin", tier3), new User("friend", tier2), new User("nobody", tier1));
     usersRepository.saveAll(sampleUsers);
   }
 }
