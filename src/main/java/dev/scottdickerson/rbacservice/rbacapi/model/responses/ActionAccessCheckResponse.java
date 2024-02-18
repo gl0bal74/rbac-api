@@ -9,5 +9,7 @@ public class ActionAccessCheckResponse {
   String action;
   String user;
   boolean hasPermission;
+  boolean allowsSudo;
+
   String message;
 }

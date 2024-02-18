@@ -72,6 +72,7 @@ public class ProtectedActionService {
     }
 
     response.setHasPermission(allowAction);
+    response.setAllowsSudo(protectedActionsAccessTier.isAllowSudo());
 
     if (!allowAction) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
