@@ -1,10 +1,10 @@
 package dev.scottdickerson.rbacservice.rbacapi.initializers;
 
 import dev.scottdickerson.rbacservice.rbacapi.model.AccessTier;
-import dev.scottdickerson.rbacservice.rbacapi.model.ProtectedAction;
+import dev.scottdickerson.rbacservice.rbacapi.model.Intent;
 import dev.scottdickerson.rbacservice.rbacapi.model.User;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.AccessTierRepository;
-import dev.scottdickerson.rbacservice.rbacapi.repositories.ProtectedActionsRepository;
+import dev.scottdickerson.rbacservice.rbacapi.repositories.IntentsRepository;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.UsersRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class DataInitializer {
 
-  private final ProtectedActionsRepository protectedActionsRepository;
+  private final IntentsRepository intentsRepository;
   private final UsersRepository usersRepository;
 
   private final AccessTierRepository accessTierRepository;
@@ -38,13 +38,13 @@ public class DataInitializer {
     tier2 = accessTierRepository.save(tier2);
     tier3 = accessTierRepository.save(tier3);
 
-    List<ProtectedAction> protectedActions =
+    List<Intent> intents =
         List.of(
-            new ProtectedAction("Play music", tier1),
-            new ProtectedAction("Check weather", tier1),
-            new ProtectedAction("Check heart rate", tier2),
-            new ProtectedAction("Book flights", tier3));
-    protectedActionsRepository.saveAll(protectedActions);
+            new Intent("Play music", tier1),
+            new Intent("Check weather", tier1),
+            new Intent("Check heart rate", tier2),
+            new Intent("Book flights", tier3));
+    intentsRepository.saveAll(intents);
 
     List<User> sampleUsers =
         List.of(new User("admin", tier3), new User("friend", tier2), new User("nobody", tier1));

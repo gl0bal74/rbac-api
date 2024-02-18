@@ -13,7 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProtectedAction {
+public class Intent {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,11 +26,11 @@ public class ProtectedAction {
   @JsonBackReference
   private AccessTier accessTier;
 
-  public ProtectedAction(String name) {
+  public Intent(String name) {
     this.name = name;
   }
 
-  public ProtectedAction(String name, AccessTier accessTier) {
+  public Intent(String name, AccessTier accessTier) {
     this.name = name;
     this.accessTier = accessTier;
   }

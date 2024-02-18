@@ -10,6 +10,5 @@ public class ActionAccessCheckResponse {
   String user;
   boolean hasPermission;
   boolean allowsSudo;
-
   String message;
 }

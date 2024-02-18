@@ -37,7 +37,7 @@ public class AccessTier {
 
   @OneToMany(mappedBy = "accessTier", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JsonManagedReference
-  private List<ProtectedAction> protectedActions = new ArrayList<>();
+  private List<Intent> intents = new ArrayList<>();
 
   public AccessTier(String name, String description, long hierarchy) {
     this.name = name;

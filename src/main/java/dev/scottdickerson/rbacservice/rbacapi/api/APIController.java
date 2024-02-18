@@ -1,14 +1,14 @@
 package dev.scottdickerson.rbacservice.rbacapi.api;
 
 import dev.scottdickerson.rbacservice.rbacapi.model.AccessTier;
-import dev.scottdickerson.rbacservice.rbacapi.model.ProtectedAction;
+import dev.scottdickerson.rbacservice.rbacapi.model.Intent;
 import dev.scottdickerson.rbacservice.rbacapi.model.User;
 import dev.scottdickerson.rbacservice.rbacapi.model.requests.ActionAccessCheckRequest;
 import dev.scottdickerson.rbacservice.rbacapi.model.responses.ActionAccessCheckResponse;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.AccessTierRepository;
-import dev.scottdickerson.rbacservice.rbacapi.repositories.ProtectedActionsRepository;
+import dev.scottdickerson.rbacservice.rbacapi.repositories.IntentsRepository;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.UsersRepository;
-import dev.scottdickerson.rbacservice.rbacapi.services.ProtectedActionService;
+import dev.scottdickerson.rbacservice.rbacapi.services.IntentsService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Slf4j
 public class APIController {
   private final AccessTierRepository accessTierRepository;
-  private final ProtectedActionsRepository protectedActionsRepository;
-  private final ProtectedActionService protectedActionService;
+  private final IntentsRepository intentsRepository;
+  private final IntentsService intentsService;
   private final UsersRepository usersRepository;
 
   @GetMapping("/access-tiers")
@@ -44,16 +44,15 @@ public class APIController {
     return ResponseEntity.ok(accessTierRepository.findByName(name));
   }
 
-  @GetMapping("/protected-actions")
-  public ResponseEntity<List<ProtectedAction>> getProtectedActions() {
-    return ResponseEntity.ok(protectedActionsRepository.findAll());
+  @GetMapping("/intents")
+  public ResponseEntity<List<Intent>> getIntents() {
+    return ResponseEntity.ok(intentsRepository.findAll());
   }
 
-  @PostMapping("/protected-actions")
-  public ResponseEntity<ProtectedAction> createProtectedAction(
-      @RequestBody ProtectedAction protectedAction) {
-    log.info("Creating protected action: " + protectedAction);
-    return ResponseEntity.ok(protectedActionsRepository.save(protectedAction));
+  @PostMapping("/intents")
+  public ResponseEntity<Intent> createIntent(@RequestBody Intent intent) {
+    log.info("Creating protected action: " + intent);
+    return ResponseEntity.ok(intentsRepository.save(intent));
   }
 
   @GetMapping("/users")
@@ -72,6 +71,6 @@ public class APIController {
   @PostMapping(value = "/check-permission")
   public ResponseEntity<ActionAccessCheckResponse> doesUserHavePermission(
       @RequestBody ActionAccessCheckRequest actionAccessCheckRequest) {
-    return protectedActionService.checkPermission(actionAccessCheckRequest);
+    return intentsService.checkPermission(actionAccessCheckRequest);
   }
 }

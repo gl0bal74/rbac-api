@@ -5,7 +5,7 @@ import dev.scottdickerson.rbacservice.rbacapi.model.User;
 import dev.scottdickerson.rbacservice.rbacapi.model.requests.ActionAccessCheckRequest;
 import dev.scottdickerson.rbacservice.rbacapi.model.responses.ActionAccessCheckResponse;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.AccessTierRepository;
-import dev.scottdickerson.rbacservice.rbacapi.repositories.ProtectedActionsRepository;
+import dev.scottdickerson.rbacservice.rbacapi.repositories.IntentsRepository;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,21 +16,20 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ProtectedActionService {
-  private final ProtectedActionsRepository protectedActionsRepository;
+public class IntentsService {
+  private final IntentsRepository intentsRepository;
   private final AccessTierRepository accessTierRepository;
   private final UsersRepository usersRepository;
 
   public ResponseEntity<ActionAccessCheckResponse> checkPermission(
       ActionAccessCheckRequest request) {
-    String username = request.userName();
-    String action = request.protectedActionName();
+    String username = request.user();
+    String action = request.intent();
     String password = request.password();
     log.info("Checking permission for action {} for user {}", action, username);
     User user = usersRepository.findByUsername(username);
     AccessTier usersAccessTier = accessTierRepository.findByUsers_Username(username);
-    AccessTier protectedActionsAccessTier =
-        accessTierRepository.findByProtectedActions_Name(action);
+    AccessTier protectedActionsAccessTier = accessTierRepository.findByIntents_Name(action);
 
     log.info("User access tier: {}", usersAccessTier);
     log.info("Protected action access tier: {}", protectedActionsAccessTier);

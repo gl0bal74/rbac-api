@@ -16,7 +16,7 @@ public interface AccessTierRepository extends CrudRepository<AccessTier, UUID> {
 
   AccessTier findByName(String name);
 
-  AccessTier findByProtectedActions_Name(String name);
+  AccessTier findByIntents_Name(String name);
 
   AccessTier findByUsers_Username(String username);
 }
