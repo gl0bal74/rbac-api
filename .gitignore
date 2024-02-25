@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Home Assistant ###
+/config/.storage
+/config/.cloud/
+/config/home-assistant.*
+/config/.HA_VERSION
+/config/home-assistant_v2.db

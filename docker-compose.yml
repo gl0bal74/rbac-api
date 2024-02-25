@@ -15,3 +15,9 @@ services:
       MYSQL_DATABASE: rbac
       MYSQL_USER: user
       MYSQL_PASSWORD: password
+  homeassistant:
+    image: homeassistant/home-assistant:stable
+    volumes:
+      - ./config:/config
+    ports:
+      - "8123:8123"
