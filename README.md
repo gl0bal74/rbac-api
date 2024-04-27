@@ -3,11 +3,14 @@
 ## Installing
 
 - Setup IntelliJ IDEA CE with Lombok plugin
+- Install [Chocolatey](https://chocolatey.org/install)
 - Install gradle
 `brew install gradle`
 Or on Windows
 `choco install gradle`
 - Install Docker Desktop from the web
+- On Windows you'll need to install `make`
+`choco install make`
 
 ## Building and running the API in docker
 `make docker`
