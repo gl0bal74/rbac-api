@@ -3,14 +3,17 @@
 ## Installing
 
 - Setup IntelliJ IDEA CE with Lombok plugin
+- Install Java S1 SDK
 - Install [Chocolatey](https://chocolatey.org/install)
 - Install gradle
 `brew install gradle`
 Or on Windows
 `choco install gradle`
 - Install Docker Desktop from the web
-- On Windows you'll need to install `make`
-`choco install make`
+- On Windows you'll need to install make `choco install make`
+- Install dbeaver in order to view schema
+- Install Postman Desktop Agent
+- 
 
 ## Building and running the API in docker
 `make docker`
