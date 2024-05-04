@@ -1,12 +1,16 @@
 package dev.scottdickerson.rbacservice.rbacapi.initializers;
 
+import com.github.javafaker.Faker;
 import dev.scottdickerson.rbacservice.rbacapi.model.AccessTier;
+import dev.scottdickerson.rbacservice.rbacapi.model.Credential;
 import dev.scottdickerson.rbacservice.rbacapi.model.Intent;
 import dev.scottdickerson.rbacservice.rbacapi.model.User;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.AccessTierRepository;
+import dev.scottdickerson.rbacservice.rbacapi.repositories.CredentialsRepository;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.IntentsRepository;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.UsersRepository;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -22,6 +26,8 @@ public class DataInitializer {
   private final UsersRepository usersRepository;
 
   private final AccessTierRepository accessTierRepository;
+  private final CredentialsRepository credentialsRepository;
+  private final Faker faker = new Faker();
 
   @EventListener(ApplicationReadyEvent.class)
   public void setupData() {
@@ -49,5 +55,29 @@ public class DataInitializer {
     List<User> sampleUsers =
         List.of(new User("admin", tier3), new User("friend", tier2), new User("nobody", tier1));
     usersRepository.saveAll(sampleUsers);
+  }
+
+  @EventListener(ApplicationReadyEvent.class)
+  public void setupCredentials() {
+    log.info("Setting up credentials");
+    credentialsRepository.deleteAll();
+    List<String> intents =
+        List.of("Play music", "Check weather", "Check heart rate", "Book flights");
+    List<String> users = List.of("admin", "friend", "nobody");
+    users.forEach(
+        user ->
+            intents.forEach(
+                intent -> {
+                  Credential newCredential =
+                      Credential.builder()
+                          .apiKey("apiKey")
+                          .intentName(intent)
+                          .apiKey(UUID.randomUUID().toString())
+                          .userName(user)
+                          .serviceURL(faker.internet().url())
+                          .build();
+                  log.info("Saving new Credential {}", newCredential.toString());
+                  credentialsRepository.save(newCredential);
+                }));
   }
 }

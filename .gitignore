@@ -42,3 +42,5 @@ out/
 /config/home-assistant.*
 /config/.HA_VERSION
 /config/home-assistant_v2.db
+/config/home-assistant_v2.db-shm
+/config/home-assistant_v2.db-wal
