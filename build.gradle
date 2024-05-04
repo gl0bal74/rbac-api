@@ -27,6 +27,8 @@ dependencies {
     implementation('com.github.javafaker:javafaker:1.0.2') {
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
+    // add flyway
+//    implementation 'org.flywaydb:flyway-core'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //	implementation 'org.springframework.data:spring-data-rest-hal-explorer'

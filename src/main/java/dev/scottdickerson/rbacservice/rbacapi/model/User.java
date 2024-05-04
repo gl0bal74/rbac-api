@@ -26,6 +26,11 @@ public class User {
   @JsonBackReference
   private AccessTier accessTier;
 
+  //  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  //  @JoinColumn(name = "credential_id", nullable = false)
+  //  @JsonBackReference
+  //  private Credential credential;
+
   public User(String username, AccessTier accessTier) {
     this.username = username;
     this.accessTier = accessTier;

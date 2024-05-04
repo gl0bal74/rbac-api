@@ -13,6 +13,7 @@ import dev.scottdickerson.rbacservice.rbacapi.repositories.UsersRepository;
 import dev.scottdickerson.rbacservice.rbacapi.services.ActionService;
 import dev.scottdickerson.rbacservice.rbacapi.services.IntentsService;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -84,9 +85,9 @@ public class APIController {
     return ResponseEntity.ok(credentialsRepository.findAll());
   }
 
-  @PostMapping("/action/{intentName}/user/{username}")
+  @PostMapping("/action/{intentId}/user/{userId}")
   public ResponseEntity<String> performIntent(
-      @PathVariable String intentName, @PathVariable String username) {
-    return actionService.performAction(intentName, username);
+          @PathVariable UUID intentId, @PathVariable UUID userId) {
+    return actionService.performAction(intentId, userId);
   }
 }

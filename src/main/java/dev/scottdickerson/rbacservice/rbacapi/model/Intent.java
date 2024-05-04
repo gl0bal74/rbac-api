@@ -23,8 +23,13 @@ public class Intent {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "access_tier_id", nullable = false)
-  @JsonBackReference
+  @JsonBackReference // Prevents infinite recursion when serializing
   private AccessTier accessTier;
+
+  //  @ManyToOne(fetch = FetchType.LAZY)
+  //  @JoinColumn(name = "credential_id", nullable = false)
+  //  @JsonBackReference
+  //  private Credential credential;
 
   public Intent(String name) {
     this.name = name;

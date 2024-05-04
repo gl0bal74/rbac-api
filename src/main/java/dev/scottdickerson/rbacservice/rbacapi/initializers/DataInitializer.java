@@ -50,30 +50,25 @@ public class DataInitializer {
             new Intent("Check weather", tier1),
             new Intent("Check heart rate", tier2),
             new Intent("Book flights", tier3));
-    intentsRepository.saveAll(intents);
+
+    // convert this to a list
+
+    Iterable<Intent> savedIntents = intentsRepository.saveAll(intents);
 
     List<User> sampleUsers =
         List.of(new User("admin", tier3), new User("friend", tier2), new User("nobody", tier1));
-    usersRepository.saveAll(sampleUsers);
-  }
+    Iterable<User> savedUsers = usersRepository.saveAll(sampleUsers);
 
-  @EventListener(ApplicationReadyEvent.class)
-  public void setupCredentials() {
-    log.info("Setting up credentials");
-    credentialsRepository.deleteAll();
-    List<String> intents =
-        List.of("Play music", "Check weather", "Check heart rate", "Book flights");
-    List<String> users = List.of("admin", "friend", "nobody");
-    users.forEach(
+    savedUsers.forEach(
         user ->
-            intents.forEach(
+            savedIntents.forEach(
                 intent -> {
                   Credential newCredential =
                       Credential.builder()
                           .apiKey("apiKey")
-                          .intentName(intent)
+                          .intent(intent)
                           .apiKey(UUID.randomUUID().toString())
-                          .userName(user)
+                          .user(user)
                           .serviceURL(faker.internet().url())
                           .build();
                   log.info("Saving new Credential {}", newCredential.toString());
