@@ -1,12 +1,15 @@
 package dev.scottdickerson.rbacservice.rbacapi.services;
 
 import dev.scottdickerson.rbacservice.rbacapi.model.AccessTier;
+import dev.scottdickerson.rbacservice.rbacapi.model.Intent;
 import dev.scottdickerson.rbacservice.rbacapi.model.User;
 import dev.scottdickerson.rbacservice.rbacapi.model.requests.ActionAccessCheckRequest;
 import dev.scottdickerson.rbacservice.rbacapi.model.responses.ActionAccessCheckResponse;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.AccessTierRepository;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.IntentsRepository;
 import dev.scottdickerson.rbacservice.rbacapi.repositories.UsersRepository;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,26 +26,43 @@ public class IntentsService {
 
   public ResponseEntity<ActionAccessCheckResponse> checkPermission(
       ActionAccessCheckRequest request) {
-    String username = request.user();
-    String action = request.intent();
+    UUID userId = request.userId();
+    UUID intentId = request.intentId();
     String password = request.password();
-    log.info("Checking permission for action {} for user {}", action, username);
-    User user = usersRepository.findByUsername(username);
-    AccessTier usersAccessTier = accessTierRepository.findByUsers_Username(username);
-    AccessTier protectedActionsAccessTier = accessTierRepository.findByIntents_Name(action);
+    log.info("Checking permission for intent {} for user {}", intentId, userId);
+    Optional<User> userOptional = usersRepository.findById(userId);
+    Optional<Intent> intentOptional = intentsRepository.findById(intentId);
+
+    if (userOptional.isEmpty()) {
+      log.info("User {} not found", userId);
+      throw new IllegalArgumentException("User " + userId + " not found");
+    }
+    if (intentOptional.isEmpty()) {
+      log.info("Protected intent {} not found", intentId);
+      throw new IllegalArgumentException("Protected intent " + intentId + " not found");
+    }
+    User user = userOptional.get();
+    Intent intent = intentOptional.get();
+
+    AccessTier usersAccessTier = accessTierRepository.findByUsers(user);
+    AccessTier protectedActionsAccessTier = accessTierRepository.findByIntents(intent);
 
     log.info("User access tier: {}", usersAccessTier);
-    log.info("Protected action access tier: {}", protectedActionsAccessTier);
+    log.info("Protected intent access tier: {}", protectedActionsAccessTier);
 
     ActionAccessCheckResponse response =
-        ActionAccessCheckResponse.builder().user(username).action(action).build();
+        ActionAccessCheckResponse.builder()
+            .user(user.getUsername())
+            .action(intent.getName())
+            .build();
     if (usersAccessTier == null) {
-      log.info("User {} not found", username);
-      throw new IllegalArgumentException("User " + username + " not found");
+      log.info("User {} not found in access tier", user);
+      throw new IllegalArgumentException("User " + user + " not found in access tier");
     }
     if (protectedActionsAccessTier == null) {
-      log.info("Protected action {} not found", action);
-      throw new IllegalArgumentException("Protected action " + action + " not found");
+      log.info("Protected intent {} not found in intent tier", intent);
+      throw new IllegalArgumentException(
+          "Protected intent " + intent + " not found in access tier");
     }
     boolean hasPermission =
         usersAccessTier.getHierarchy() >= protectedActionsAccessTier.getHierarchy();
@@ -54,7 +74,7 @@ public class IntentsService {
     boolean allowAction = hasPermission || sudoCheckPassed;
 
     if (allowAction) {
-      log.info("User {} has permission to perform action {}", username, action);
+      log.info("User {} has permission to perform action {}", user.getUsername(), intent.getName());
       response.setMessage(
           !hasPermission && sudoCheckPassed
               ? "You have given the correct password"
@@ -62,7 +82,10 @@ public class IntentsService {
     }
 
     if (!allowAction) {
-      log.info("User {} does not have permission to perform action {}", username, action);
+      log.info(
+          "User {} does not have permission to perform action {}",
+          user.getUsername(),
+          intent.getName());
       log.info("Did sudo check pass? {}", sudoCheckPassed);
       response.setMessage(
           !sudoCheckPassed

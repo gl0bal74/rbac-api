@@ -47,7 +47,40 @@ public class APIController {
 
   @GetMapping("/access-tiers/{name}")
   public ResponseEntity<AccessTier> getAccessTier(@PathVariable("name") String name) {
-    return ResponseEntity.ok(accessTierRepository.findByName(name));
+    AccessTier accessTier = accessTierRepository.findByName(name);
+    return ResponseEntity.ok(accessTier);
+  }
+
+  @GetMapping("/access-tiers/user/{userId}")
+  public ResponseEntity<AccessTier> getAccessTierByUserId(
+      @PathVariable(name = "userId") UUID userId) {
+    User user = usersRepository.findById(userId).orElseThrow();
+    AccessTier accessTier = accessTierRepository.findByUsers(user);
+    log.info("Access tier for user: " + accessTier.getName());
+    //    return ResponseEntity.status(200).build();
+    return ResponseEntity.ok(accessTier);
+  }
+
+  @GetMapping("/access-tiers/intent/{intentId}")
+  public ResponseEntity<AccessTier> getAccessTierByIntentId(
+      @PathVariable(name = "intentId") UUID intentId) {
+    Intent intent = intentsRepository.findById(intentId).orElseThrow();
+    AccessTier accessTier = accessTierRepository.findByIntents(intent);
+    log.info("Access tier for user: " + accessTier.getName());
+    //    return ResponseEntity.status(200).build();
+    return ResponseEntity.ok(accessTier);
+  }
+
+  @GetMapping("/access-tiers/intent/{intentId}/user/{userId}")
+  public ResponseEntity<AccessTier> getAccessTierByIntentIdAndUserId(
+      @PathVariable(name = "intentId") UUID intentId, @PathVariable(name = "userId") UUID userId) {
+    Intent intent = intentsRepository.findById(intentId).orElseThrow();
+    User user = usersRepository.findById(userId).orElseThrow();
+
+    AccessTier accessTier = accessTierRepository.findByIntentsAndUsers(intent, user);
+    log.info("Access tier for user: " + accessTier.getName());
+    //    return ResponseEntity.status(200).build();
+    return ResponseEntity.ok(accessTier);
   }
 
   @GetMapping("/intents")
@@ -87,7 +120,7 @@ public class APIController {
 
   @PostMapping("/action/{intentId}/user/{userId}")
   public ResponseEntity<String> performIntent(
-          @PathVariable UUID intentId, @PathVariable UUID userId) {
+      @PathVariable UUID intentId, @PathVariable UUID userId) {
     return actionService.performAction(intentId, userId);
   }
 }

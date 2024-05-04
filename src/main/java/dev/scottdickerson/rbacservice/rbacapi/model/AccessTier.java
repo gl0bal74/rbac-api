@@ -12,6 +12,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class AccessTier {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,7 +36,7 @@ public class AccessTier {
   @JsonManagedReference
   private List<User> users = new ArrayList<>();
 
-  @OneToMany(mappedBy = "accessTier", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "accessTier", fetch = FetchType.EAGER)
   @JsonManagedReference
   private List<Intent> intents = new ArrayList<>();
 

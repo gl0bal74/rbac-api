@@ -1,3 +1,5 @@
 package dev.scottdickerson.rbacservice.rbacapi.model.requests;
 
-public record ActionAccessCheckRequest(String intent, String user, String password) {}
+import java.util.UUID;
+
+public record ActionAccessCheckRequest(UUID intentId, UUID userId, String password) {}

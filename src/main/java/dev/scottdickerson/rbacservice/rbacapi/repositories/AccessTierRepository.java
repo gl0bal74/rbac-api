@@ -1,6 +1,8 @@
 package dev.scottdickerson.rbacservice.rbacapi.repositories;
 
 import dev.scottdickerson.rbacservice.rbacapi.model.AccessTier;
+import dev.scottdickerson.rbacservice.rbacapi.model.Intent;
+import dev.scottdickerson.rbacservice.rbacapi.model.User;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +18,9 @@ public interface AccessTierRepository extends CrudRepository<AccessTier, UUID> {
 
   AccessTier findByName(String name);
 
-  AccessTier findByIntents_Name(String name);
+  AccessTier findByIntents(Intent intent);
 
-  AccessTier findByUsers_Username(String username);
+  AccessTier findByUsers(User user);
+
+  AccessTier findByIntentsAndUsers(Intent intent, User user);
 }
