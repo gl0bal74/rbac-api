@@ -15,17 +15,6 @@ CREATE TABLE `access_tier` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- rbac.credential definition
-
-CREATE TABLE `credential` (
-  `id` binary(16) NOT NULL,
-  `api_key` varchar(255) DEFAULT NULL,
-  `intent_id` binary(16) DEFAULT NULL,
-  `serviceurl` varchar(255) DEFAULT NULL,
-  `user_id` binary(16) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 -- rbac.intent definition
 
 CREATE TABLE `intent` (
@@ -46,4 +35,19 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `FKiua758xayl0lhsuac23jcjb9d` (`access_tier_id`),
   CONSTRAINT `FKiua758xayl0lhsuac23jcjb9d` FOREIGN KEY (`access_tier_id`) REFERENCES `access_tier` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- rbac.credential definition
+
+CREATE TABLE `credential` (
+  `id` binary(16) NOT NULL,
+  `intent_id` binary(16) NOT NULL,
+  `user_id` binary(16) NOT NULL,
+  `api_key` varchar(255) DEFAULT NULL,
+  `serviceurl` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKndx32lhqh4ncjqj7da9wn49ex` (`intent_id`),
+  KEY `FKpg7bdnqxpyhrt7f8soul9y7ne` (`user_id`),
+  CONSTRAINT `FKndx32lhqh4ncjqj7da9wn49ex` FOREIGN KEY (`intent_id`) REFERENCES `intent` (`id`),
+  CONSTRAINT `FKpg7bdnqxpyhrt7f8soul9y7ne` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
