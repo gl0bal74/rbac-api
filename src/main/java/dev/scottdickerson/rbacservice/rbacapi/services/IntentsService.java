@@ -76,7 +76,7 @@ public class IntentsService {
     if (allowAction) {
       log.info("User {} has permission to perform action {}", user.getUsername(), intent.getName());
       response.setMessage(
-          !hasPermission && sudoCheckPassed
+          !hasPermission
               ? "You have given the correct password"
               : "You have permission to perform this action");
     }
@@ -86,9 +86,8 @@ public class IntentsService {
           "User {} does not have permission to perform action {}",
           user.getUsername(),
           intent.getName());
-      log.info("Did sudo check pass? {}", sudoCheckPassed);
       response.setMessage(
-          !sudoCheckPassed
+              protectedActionsAccessTier.isAllowSudo()
               ? "The access tier '" + protectedActionsAccessTier.getName() + "' requires a password"
               : "You do not have permission to perform this action.");
     }
