@@ -11,6 +11,8 @@ Or on Windows
 - Install Docker Desktop from the web
 - On Windows you'll need to install `make`
 `choco install make`
+- Install Flyway so you can clean up the database manually if you need to
+`choco install flyway`
 
 ## Building and running the API in docker
 `make docker`
@@ -24,3 +26,6 @@ A MySQL server is running in docker and listening on 3306
 database name `rbac`
 username `user`
 password `password`
+
+## Manually cleaning up the database
+`make clean-db`
