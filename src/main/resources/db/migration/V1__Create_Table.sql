@@ -20,9 +20,9 @@ CREATE TABLE `access_tier` (
 CREATE TABLE `credential` (
   `id` binary(16) NOT NULL,
   `api_key` varchar(255) DEFAULT NULL,
-  `intent_name` varchar(255) DEFAULT NULL,
+  `intent_id` binary(16) DEFAULT NULL,
   `serviceurl` varchar(255) DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL,
+  `user_id` binary(16) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

@@ -18,3 +18,9 @@ Or on Windows
 ## Testing the API Layer
 Issue a postman request that uses `http://localhost:8080` with these urls
 https://www.postman.com/winter-water-658702/workspace/dva-rbac-api/request/2152931-7dd8eff9-f790-4682-8394-4217a85ca927
+
+## Checking the database
+A MySQL server is running in docker and listening on 3306
+database name `rbac`
+username `user`
+password `password`

@@ -66,7 +66,7 @@ public class APIController {
       @PathVariable(name = "intentId") UUID intentId) {
     Intent intent = intentsRepository.findById(intentId).orElseThrow();
     AccessTier accessTier = accessTierRepository.findByIntents(intent);
-    log.info("Access tier for user: " + accessTier.getName());
+    log.info("Access tier for intent id" + intentId + ": " + accessTier.getName());
     //    return ResponseEntity.status(200).build();
     return ResponseEntity.ok(accessTier);
   }
