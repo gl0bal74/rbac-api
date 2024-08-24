@@ -4,16 +4,27 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
-  mysql:
-    image: mysql:8.0
-    ports:
-      - "3306:3306"
+      - postgres
+#      - mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: rbac
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      SQL_HOST: postgres
+#  mysql:
+#    image: mysql:8.0
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root_password
+#      MYSQL_DATABASE: rbac
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: password
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: rbac
+      POSTGRES_USER: user
   homeassistant:
     image: homeassistant/home-assistant:stable
     volumes:

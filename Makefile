@@ -12,4 +12,7 @@ docker: copy-jar
 	docker compose up -d
 
 clean-db:
-	flyway -url=jdbc:mysql://localhost:3306/rbac -user=user -password=password  -cleanDisabled=false clean
+	flyway -url=jdbc:postgres://localhost:5432/rbac -user=user -password=password  -cleanDisabled=false clean
+
+run: build
+	gradle bootRun
