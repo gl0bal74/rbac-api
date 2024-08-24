@@ -5,10 +5,9 @@ build: clean
 	gradle bootJar
 
 copy-jar: build
-	cp ./build/libs/rbac-api-0.0.1-SNAPSHOT.jar .
+	cp build/libs/rbac-api-0.0.1-SNAPSHOT.jar .
 
 docker: copy-jar
-	docker build -t rbac-api .
 	docker compose up -d
 
 clean-db:
