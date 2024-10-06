@@ -1,6 +1,6 @@
 # rbac-api
 
-## Installing
+## Installing on Windoze
 
 - Setup IntelliJ IDEA CE with Lombok plugin
 - Install [Chocolatey](https://chocolatey.org/install)
@@ -41,4 +41,4 @@ Then run the application with
 `SQL_HOST=localhost make run`
 
 ## Heroku
-The app is deployed to Heroku automatically when a PR is merged to main. The app is available at https://rbac-api-80ea28b95705.herokuapp.com/
+The app is deployed to Heroku automatically when a PR is merged to main. The app is available at https://rbac-api-2-7f872ee50879.herokuapp.com/
